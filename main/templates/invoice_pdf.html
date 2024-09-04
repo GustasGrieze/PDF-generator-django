@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Invoice PDF</title>
+    <style>
+        @font-face {
+            font-family: 'DejaVu Sans';
+            src: url('static/fonts/DejaVuSans.ttf') format('truetype');
+        }
+        body {
+            font-family: 'DejaVu Sans', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .section {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .section div {
+            width: 45%;
+        }
+        .section div p {
+            margin: 0;
+            padding: 0;
+            border-bottom: 1px solid #000;
+        }
+        .table-container {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        .footer {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>PVM Saskaita-faktura</h2>
+        <p>Serija {{ invoice.series }} Nr. {{ invoice.number }}</p>
+        <p>{{ invoice.date }}</p>
+    </div>
+    
+    <div class="section">
+        <div>
+            <h3>Pardavejas:</h3>
+            <p>{{ invoice.seller_name }}</p>
+            <p>{{ invoice.seller_address }}</p>
+            <p>{{ invoice.seller_code }}</p>
+            <p>{{ invoice.seller_vat }}</p>
+        </div>
+        <div>
+            <h3>Pirkejas:</h3>
+            <p>{{ invoice.buyer_name }}</p>
+            <p>{{ invoice.buyer_address }}</p>
+            <p>{{ invoice.buyer_code }}</p>
+            <p>{{ invoice.buyer_vat }}</p>
+        </div>
+    </div>
+    
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Eil. Nr.</th>
+                    <th>Pavadinimas</th>
+                    <th>Mat. vnt.</th>
+                    <th>Kiekis</th>
+                    <th>Kaina (be PVM) Eur</th>
+                    <th>Suma (be PVM) Eur</th>
+                    <th>PVM tarifas (%)</th>
+                    <th>PVM suma Eur</th>
+                    <th>Suma Eur</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ item.description }}</td>
+                    <td>{{ item.unit }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.unit_price }}</td>
+                    <td>{{ item.unit_price|floatformat:2 }}</td>
+                    <td>{{ item.vat_rate }}</td>
+                    <td>{{ item.total_price|floatformat:2 }}</td>
+                    <td>{{ item.total_price }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="footer">
+        <p>Saskaita israse: Jonas Jonaitis</p>
+        <p>Telefonas pasiteiravimui: +370 600 00000</p>
+    </div>
+</body>
+</html>

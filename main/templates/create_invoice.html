@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2>Sukurti sąskaitą</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ invoice_form.as_p }}
+        {{ formset.management_form }}
+        {% for form in formset %}
+            {{ form.as_p }}
+        {% endfor %}
+        <button type="submit">Išsaugoti</button>
+    </form>
+{% endblock %}
